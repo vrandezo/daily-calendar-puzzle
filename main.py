@@ -274,8 +274,6 @@ def select(field, mask):
   return copy
 
 def select_day(field, day):
-  from datetime import timedelta
-  day += timedelta(days=16)
   result = select(board, weekdays[day.weekday()])
   result = select(result, str(day.day))
   result = select(result, months[day.month-1])
