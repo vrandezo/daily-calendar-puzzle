@@ -144,8 +144,8 @@ pieces = [
     "xxx "
     "    "
     "    ",
-    "xxx "
     " xx "
+    "xxx "
     "    "
     "    ",
     "xx  "
