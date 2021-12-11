@@ -17,46 +17,242 @@ months = [
 ]
 
 pieces = [
-  "xxxx"
-  "    "
-  "    "
-  "    ",
-  "xxxx"
-  "x   "
-  "    "
-  "    ",
-  "x   "
-  "xxx "
-  "x   "
-  "    ",
-  "xxx "
-  "  xx"
-  "    "
-  "    ",
-  "x   "
-  "xxx "
-  "  x "
-  "    ",
-  "xxx "
-  "xx  "
-  "    "
-  "    ",
-  "xxx "
-  "x   "
-  "x   "
-  "    ",
-  "xxx "
-  "x x "
-  "    "
-  "    ",
-  "x   "
-  "xx  "
-  " x  "
-  "    ",
-  "xxx "
-  "x   "
-  "    "
-  "    "
+  [
+    "xxxx"
+    "    "
+    "    "
+    "    ",
+    "x   "
+    "x   "
+    "x   "
+    "x   "
+  ],
+  [
+    "xxxx"
+    "x   "
+    "    "
+    "    ",
+    "xxxx"
+    "   x"
+    "    "
+    "    ",
+    "xx  "
+    "x   "
+    "x   "
+    "x   ",
+    "xx  "
+    " x  "
+    " x  "
+    " x  ",
+    "x   "
+    "xxxx"
+    "    "
+    "    ",
+    "   x"
+    "xxxx"
+    "    "
+    "    ",
+    "x   "
+    "x   "
+    "x   "
+    "xx  ",
+    " x  "
+    " x  "
+    " x  "
+    "xx  "
+  ],
+  [
+    "x   "
+    "xxx "
+    "x   "
+    "    ",
+    "xxx "
+    " x  "
+    " x  "
+    "    ",
+    "  x "
+    "xxx "
+    "  x "
+    "    ",
+    " x  "
+    " x  "
+    "xxx "
+    "    "
+  ],
+  [
+    "xxx "
+    "  xx"
+    "    "
+    "    ",
+    " xxx"
+    "xx  "
+    "    "
+    "    ",
+    "x   "
+    "x   "
+    "xx  "
+    " x  ",
+    " x  "
+    " x  "
+    "xx  "
+    "x   ",
+    "x   "
+    "xx  "
+    " x  "
+    " x  ",
+    " x  "
+    "xx  "
+    "x   "
+    "x   ",
+    "xx  "
+    " xxx"
+    "    "
+    "    ",
+    "  xx"
+    "xxx "
+    "    "
+    "    "
+  ],
+  [
+    "x   "
+    "xxx "
+    "  x "
+    "    ",
+    "  x "
+    "xxx "
+    "x   "
+    "    ",
+    "xx  "
+    " x  "
+    " xx "
+    "    ",
+    " xx "
+    " x  "
+    "xx  "
+    "    "
+  ],
+  [
+    "xxx "
+    "xx  "
+    "    "
+    "    ",
+    "xxx "
+    " xx "
+    "    "
+    "    ",
+    "xx  "
+    "xxx "
+    "    "
+    "    ",
+    "xxx "
+    " xx "
+    "    "
+    "    ",
+    "xx  "
+    "xx  "
+    "x   "
+    "    ",
+    "xx  "
+    "xx  "
+    " x  "
+    "    ",
+    " x  "
+    "xx  "
+    "xx  "
+    "    ",
+    "x   "
+    "xx  "
+    "xx  "
+    "    "
+  ],
+  [
+    "xxx "
+    "x   "
+    "x   "
+    "    ",
+    "xxx "
+    "  x "
+    "  x "
+    "    ",
+    "x   "
+    "x   "
+    "xxx "
+    "    ",
+    "  x "
+    "  x "
+    "xxx "
+    "    "
+  ],
+  [
+    "xxx "
+    "x x "
+    "    "
+    "    ",
+    "x x "
+    "xxx "
+    "    "
+    "    ",
+    "xx  "
+    "x   "
+    "xx  "
+    "    ",
+    "xx  "
+    " x  "
+    "xx  "
+    "    "
+  ],
+  [
+    "x   "
+    "xx  "
+    " x  "
+    "    ",
+    " x  "
+    "xx  "
+    "x   "
+    "    ",
+    "xx  "
+    " xx "
+    "    "
+    "    ",
+    " xx "
+    "xx  "
+    "    "
+    "    "
+  ],
+  [
+    "xxx "
+    "x   "
+    "    "
+    "    ",
+    "xxx "
+    "  x "
+    "    "
+    "    ",
+    "x   "
+    "xxx "
+    "    "
+    "    ",
+    "  x "
+    "xxx "
+    "    "
+    "    ",
+    "x   "
+    "x   "
+    "xx  "
+    "    ",
+    " x  "
+    " x  "
+    "xx  "
+    "    ",
+    "xx  "
+    "x   "
+    "x   "
+    "    ",
+    "xx  "
+    " x  "
+    " x  "
+    "    "
+  ]
 ]
 
 def show(candidate):
@@ -78,8 +274,10 @@ def select(field, mask):
   return copy
 
 def select_day(field, day):
-  result = select(board, weekdays[day.weekday()+1])
-  result = select(result, str(day.day+1))
+  from datetime import timedelta
+  day += timedelta(days=16)
+  result = select(board, weekdays[day.weekday()])
+  result = select(result, str(day.day))
   result = select(result, months[day.month-1])
   return result
 
@@ -135,32 +333,6 @@ def print_piece(piece):
     print(c, end="")
     if not (x+1)%4: print("")
 
-def mirror(piece):
-  result = list(16 * " ")
-  for i in range(16):
-    if piece[i] == "x":
-      x = i % 4
-      y = i // 4
-      pos = y*4 + (3-x)
-      result[pos] = "x"
-  return "".join(result)
-
-def turn(piece):
-  result = list(16 * " ")
-  for i in range(16):
-    if piece[i] == "x":
-      x = i % 4
-      y = i // 4
-      pos = x*4 + (3-y)
-      result[pos] = "x"
-  return "".join(result)
-
-def turn2(piece):
-  return turn(turn(piece))
-
-def turn3(piece):
-  return turn(turn(turn(piece)))
-
 def try_next(state, used):
   print("\r" + used.ljust(12), end="")
   if (len(used) == 10):
@@ -170,15 +342,7 @@ def try_next(state, used):
   for q in range(10):
     if str(q) in used:
       continue
-    for j in range(8):
-      if j == 0: turned_piece = pieces[q]
-      if j == 1: turned_piece = turn(pieces[q])
-      if j == 2: turned_piece = turn2(pieces[q])
-      if j == 3: turned_piece = turn3(pieces[q])
-      if j == 4: turned_piece = mirror(pieces[q])
-      if j == 5: turned_piece = mirror(turn(pieces[q]))
-      if j == 6: turned_piece = mirror(turn2(pieces[q]))
-      if j == 7: turned_piece = mirror(turn3(pieces[q]))
+    for turned_piece in pieces[q]:
       new_state = place(state, turned_piece, q)
       if new_state != False:
         try_next(new_state, used + str(q))
