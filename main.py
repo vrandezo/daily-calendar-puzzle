@@ -271,7 +271,10 @@ def select(field, mask):
     if copy[x] == mask:
       copy[x] = copy[x] + "*"
       return copy
-  return copy
+  print("Unknown value", mask)
+  print(weekdays)
+  print(months)
+  exit(1)
 
 def select_day(field, day):
   result = select(board, weekdays[day.weekday()])
