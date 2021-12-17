@@ -292,7 +292,7 @@ def place(board, piece, tag):
     def first_free_field(board):
         for i in range(len(board)):
             if is_blocked(board, i): continue
-                return i
+            return i
         return 99
 
     fff = first_free_field(board)
@@ -349,7 +349,14 @@ def try_next(state, used):
                 try_next(new_state, used + str(q))
 
 from datetime import date
-riddle = select_day(board, date.today())
+import sys
+if len(sys.argv) != 4:
+    riddle = select_day(board, date.today())
+else:
+    riddle = select(board, sys.argv[1])
+    riddle = select(riddle, sys.argv[2])
+    riddle = select(riddle, sys.argv[3])
+
 show(riddle)
 print("")
 try_next(riddle, "")
