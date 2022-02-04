@@ -435,9 +435,9 @@ const display_result = (state) => {
   }
 }
 
-const try_next = (state, used) => {
+function* try_next(state, used) {
   if (used.length === 10) {
-    display_result(show(state))
+    yield show(state)
     return true
   }
   for (let q=0; q<10; q++) {
@@ -447,13 +447,20 @@ const try_next = (state, used) => {
     for (const turned_piece of pieces[q]) {
       const new_state = place(state, turned_piece, q)
       if (new_state !== false) {
-        const result = try_next(new_state, used.concat([q.toString()]))
-        if (result === true) {
-          return true
+        let done = false
+        const g = try_next(new_state, used.concat([q.toString()]))
+        while (!done) {
+          const result = g.next()
+          if (result.done) {
+            done = true
+          } else {
+            yield result.value
+          }
         }
       }
     }
   }
+  return true
 }
 
 const fill_selects = () => {
@@ -471,11 +478,24 @@ const fill_selects = () => {
   fill_select(Array.from({ length: 31 }, (_, i) => i + 1), "daynumber")
 }
 
+let gen
+
 const go = () => {
   let riddle = select(board, document.getElementById("weekday").value)
   riddle = select(riddle, document.getElementById("daynumber").value)
   riddle = select(riddle, document.getElementById("month").value)
-  try_next(riddle, [])
+  gen = try_next(riddle, [])
+  display_result(gen.next().value)
+}
+
+const next = () => {
+  const result = gen.next()
+  if (result.done) {
+    console.log('da capo')
+    go()
+  } else {
+    display_result(result.value)
+  }
 }
 </script>
 <style>
@@ -499,6 +519,7 @@ table {
   <select name="month" id="month"></select>
   <select name="weekday" id="weekday"></select>
   <button type="button" name="button" onclick="go()">Go</button>
+  <button type="button" name="button" onclick="next()">Another</button>
   <table cellspacing="0" cellpadding="0" align="center"><tbody>
     <tr>
       <td></td>
@@ -573,6 +594,6 @@ table {
       <td></td>
     </tr>
   </tbody></table>
-  <script>fill_selects(); try_next(select_day(board, new Date()), [])</script>
+  <script>fill_selects(); select_day(board, new Date()); go()</script>
 </body>
 </html>
