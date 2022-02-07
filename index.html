@@ -479,6 +479,7 @@ const fill_selects = () => {
 }
 
 let gen
+let first = true
 
 const go = () => {
   let riddle = select(board, document.getElementById("weekday").value)
@@ -489,6 +490,10 @@ const go = () => {
 }
 
 const next = () => {
+  if (first) {
+    go()
+    first = false
+  }
   const result = gen.next()
   if (result.done) {
     console.log('da capo')
@@ -512,14 +517,16 @@ table {
 .outside {
   border-color: white;
 }
+button {
+  padding: 2em;
+  margin: 2em;
+}
 </style>
 </head>
 <body align="center">
   <select name="daynumber" id="daynumber"></select>
   <select name="month" id="month"></select>
   <select name="weekday" id="weekday"></select>
-  <button type="button" name="button" onclick="go()">Go</button>
-  <button type="button" name="button" onclick="next()">Another</button>
   <table cellspacing="0" cellpadding="0" align="center"><tbody>
     <tr>
       <td></td>
@@ -594,6 +601,8 @@ table {
       <td></td>
     </tr>
   </tbody></table>
+  <button type="button" name="button" onclick="next()">Go</button>
+  <div>You can click repeatedly for more result</div>
   <script>fill_selects(); select_day(board, new Date())</script>
 </body>
 </html>
