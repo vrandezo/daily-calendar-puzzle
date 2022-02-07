@@ -490,9 +490,11 @@ const go = () => {
 }
 
 const next = () => {
+  document.getElementById('repeat').innerHTML = ''
   if (first) {
     go()
     first = false
+    document.getElementById('repeat').innerHTML = 'You can click repeatedly for more result'
   }
   const result = gen.next()
   if (result.done) {
@@ -602,7 +604,7 @@ button {
     </tr>
   </tbody></table>
   <button type="button" name="button" onclick="next()">Go</button>
-  <div>You can click repeatedly for more result</div>
+  <div id="repeat"></div>
   <script>fill_selects(); select_day(board, new Date())</script>
 </body>
 </html>
